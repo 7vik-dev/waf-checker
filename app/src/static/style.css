@@ -1253,3 +1253,206 @@ body[data-theme='dark'] .middle-footer {
 .settings-section:last-child {
 	border-bottom: none;
 }
+
+/* ===== Hacker Vibe Overrides ===== */
+:root {
+	--font-family: 'JetBrains Mono', monospace;
+	--bs-body-bg: #030704;
+	--bs-body-color: #9dffb7;
+	--bs-card-bg: rgba(4, 14, 8, 0.9);
+	--bs-card-color: #9dffb7;
+	--accent: #2bff88;
+	--accent-hover: #7affb4;
+	--accent-glow: rgba(43, 255, 136, 0.28);
+	--section-border: rgba(43, 255, 136, 0.24);
+	--section-bg: rgba(9, 35, 18, 0.6);
+	--chip-bg: rgba(21, 79, 46, 0.35);
+	--chip-active-bg: #17c764;
+	--chip-active-color: #021208;
+	--chip-border: rgba(122, 255, 180, 0.22);
+	--surface-hover: rgba(23, 199, 100, 0.16);
+	--text-muted: #5fd18f;
+}
+
+body.hacker-ui {
+	background:
+		radial-gradient(circle at 10% -20%, rgba(38, 145, 85, 0.2), transparent 45%),
+		radial-gradient(circle at 95% 120%, rgba(27, 110, 69, 0.24), transparent 40%),
+		linear-gradient(180deg, #040a06 0%, #020503 70%, #010301 100%) !important;
+	color: var(--bs-body-color) !important;
+	text-shadow: 0 0 1px rgba(43, 255, 136, 0.2);
+}
+
+body.hacker-ui::before {
+	content: '';
+	position: fixed;
+	inset: 0;
+	pointer-events: none;
+	background-image: repeating-linear-gradient(to bottom,
+			rgba(133, 255, 190, 0.04) 0px,
+			rgba(133, 255, 190, 0.04) 1px,
+			transparent 2px,
+			transparent 4px);
+	opacity: 0.26;
+	z-index: 999;
+}
+
+body.hacker-ui .column-left,
+body.hacker-ui .column-right,
+body.hacker-ui .middle-header,
+body.hacker-ui .middle-footer,
+body.hacker-ui .card,
+body.hacker-ui .modal-content {
+	background: linear-gradient(145deg, rgba(6, 20, 11, 0.94), rgba(3, 11, 6, 0.92)) !important;
+	border-color: var(--section-border) !important;
+	box-shadow: 0 0 24px rgba(14, 121, 65, 0.2), inset 0 0 1px rgba(108, 255, 171, 0.25);
+}
+
+body.hacker-ui .middle-header,
+body.hacker-ui .middle-footer {
+	backdrop-filter: blur(7px);
+}
+
+body.hacker-ui h1,
+body.hacker-ui h2,
+body.hacker-ui h3,
+body.hacker-ui h4,
+body.hacker-ui h5,
+body.hacker-ui h6 {
+	font-family: 'Share Tech Mono', 'JetBrains Mono', monospace;
+	letter-spacing: 0.04em;
+	color: #b8ffce;
+}
+
+body.hacker-ui .terminal-banner {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.45rem;
+	font-size: 0.8rem;
+	border: 1px solid var(--section-border);
+	border-radius: 8px;
+	background: rgba(6, 27, 14, 0.7);
+	padding: 0.45rem 0.7rem;
+	color: #8dfeb8;
+}
+
+body.hacker-ui .terminal-banner .prompt {
+	color: #56ff9d;
+}
+
+body.hacker-ui .terminal-banner .cursor {
+	animation: blink-cursor 1s steps(2, start) infinite;
+	color: #7affb4;
+}
+
+body.hacker-ui .terminal-banner .cmd {
+	color: #b8ffce;
+	opacity: 0.95;
+}
+
+@keyframes blink-cursor {
+	0%,
+	50% {
+		opacity: 1;
+	}
+
+	50.01%,
+	100% {
+		opacity: 0.25;
+	}
+}
+
+body.hacker-ui .url-input-group .form-control,
+body.hacker-ui textarea.form-control,
+body.hacker-ui .form-select {
+	background-color: rgba(2, 12, 7, 0.85) !important;
+	color: #b8ffce !important;
+	border-color: rgba(83, 245, 152, 0.34) !important;
+}
+
+body.hacker-ui .url-input-group .form-control::placeholder,
+body.hacker-ui textarea.form-control::placeholder {
+	color: #4eb277;
+}
+
+body.hacker-ui .url-input-group .btn-primary {
+	background: linear-gradient(135deg, #18d36c, #0ca44f) !important;
+	color: #04110b;
+	font-weight: 700;
+}
+
+body.hacker-ui .btn {
+	border-color: rgba(80, 239, 148, 0.42);
+}
+
+body.hacker-ui .btn-outline-secondary,
+body.hacker-ui .btn-outline-info,
+body.hacker-ui .btn-outline-success,
+body.hacker-ui .btn-outline-warning,
+body.hacker-ui .btn-outline-primary,
+body.hacker-ui .btn-outline-danger {
+	color: #90f7bb;
+}
+
+body.hacker-ui .btn-outline-secondary:hover,
+body.hacker-ui .btn-outline-info:hover,
+body.hacker-ui .btn-outline-success:hover,
+body.hacker-ui .btn-outline-warning:hover,
+body.hacker-ui .btn-outline-primary:hover,
+body.hacker-ui .btn-outline-danger:hover {
+	background-color: rgba(30, 169, 92, 0.24);
+	color: #d4ffe4;
+	border-color: #58f79f;
+}
+
+body.hacker-ui .section-label,
+body.hacker-ui .text-muted,
+body.hacker-ui small {
+	color: #5fd18f !important;
+}
+
+body.hacker-ui .form-check-input:checked,
+body.hacker-ui .method-chip input[type="checkbox"]:checked+span {
+	background-color: #1ad66f !important;
+	border-color: #1ad66f !important;
+	color: #021208;
+}
+
+body.hacker-ui .category-grid-1col .form-check:hover,
+body.hacker-ui .settings-section:hover {
+	background: rgba(11, 50, 26, 0.3);
+}
+
+body.hacker-ui #results th {
+	background: #0a1f13;
+	color: #b2ffcb;
+	border-color: rgba(71, 255, 148, 0.22);
+}
+
+body.hacker-ui #results tr:nth-child(even) {
+	background: rgba(24, 90, 51, 0.14);
+}
+
+body.hacker-ui #results td code {
+	color: #96ffbe;
+}
+
+body.hacker-ui .status-green {
+	background: #16a34a !important;
+	color: #eafff2;
+}
+
+body.hacker-ui .status-red {
+	background: #d83a52 !important;
+	color: #fff4f6;
+}
+
+body.hacker-ui .status-orange {
+	background: #d58b1e !important;
+	color: #fff7eb;
+}
+
+body.hacker-ui .status-gray,
+body.hacker-ui .status-redirect {
+	color: #021208;
+}
