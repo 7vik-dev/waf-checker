@@ -141,12 +141,14 @@ function renderSubdomainsPanel(subdomainData) {
 
 function renderReportWithSubdomains(results, falsePositiveMode = false, subdomainData = null) {
 	const reportHtml = renderReport(results, falsePositiveMode);
-	if (!reportHtml) return '';
+	const safeReportHtml =
+		reportHtml ||
+		`<div class="alert alert-info mb-3">No scan results found for the selected target/settings.</div>`;
 
 	return `
 		<div class="results-layout">
 			<div class="results-main">
-				${reportHtml}
+				${safeReportHtml}
 			</div>
 			<div class="results-subdomains">
 				${renderSubdomainsPanel(subdomainData)}
