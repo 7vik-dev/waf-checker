@@ -108,6 +108,78 @@ function renderReport(results, falsePositiveMode = false) {
 	return html;
 }
 
+function renderSubdomainsPanel(subdomainData) {
+	const safeHost = escapeHtml(subdomainData?.targetHost || 'Unknown target');
+	const subdomains = Array.isArray(subdomainData?.subdomains) ? subdomainData.subdomains : [];
+	const error = subdomainData?.error || '';
+
+	let panel = `<div class="subdomain-panel card">
+		<div class="card-header d-flex justify-content-between align-items-center">
+			<h6 class="mb-0">Subdomains</h6>
+			<span class="badge bg-info">${subdomains.length}</span>
+		</div>
+		<div class="card-body p-2">
+			<div class="small text-muted mb-2">Target: <code>${safeHost}</code></div>`;
+
+	if (error) {
+		panel += `<div class="alert alert-warning py-2 px-2 small mb-2">${escapeHtml(error)}</div>`;
+	}
+
+	if (!subdomains.length) {
+		panel += `<div class="text-muted small">No subdomains found.</div>`;
+	} else {
+		panel += `<div class="subdomain-list">`;
+		for (const sub of subdomains) {
+			panel += `<div class="subdomain-item"><code>${escapeHtml(sub)}</code></div>`;
+		}
+		panel += `</div>`;
+	}
+
+	panel += `</div></div>`;
+	return panel;
+}
+
+function renderReportWithSubdomains(results, falsePositiveMode = false, subdomainData = null) {
+	const reportHtml = renderReport(results, falsePositiveMode);
+	if (!reportHtml) return '';
+
+	return `
+		<div class="results-layout">
+			<div class="results-main">
+				${reportHtml}
+			</div>
+			<div class="results-subdomains">
+				${renderSubdomainsPanel(subdomainData)}
+			</div>
+		</div>
+	`;
+}
+
+async function fetchSubdomainsForTarget(targetUrl) {
+	try {
+		const response = await fetch(`/api/subdomains?url=${encodeURIComponent(targetUrl)}`);
+		const data = await response.json();
+		if (!response.ok) {
+			return {
+				targetHost: data?.targetHost || targetUrl,
+				subdomains: [],
+				error: data?.error || 'Failed to load subdomains',
+			};
+		}
+		return {
+			targetHost: data?.targetHost || targetUrl,
+			subdomains: Array.isArray(data?.subdomains) ? data.subdomains : [],
+			error: '',
+		};
+	} catch (error) {
+		return {
+			targetHost: targetUrl,
+			subdomains: [],
+			error: error instanceof Error ? error.message : 'Failed to load subdomains',
+		};
+	}
+}
+
 // --- PAYLOAD CATEGORIES LOGIC ---
 const PAYLOAD_CATEGORIES = [
 	'SQL Injection',
@@ -307,6 +379,7 @@ async function fetchResults() {
 	let allResults = [];
 	let detectedWAFType = window.detectedWAF || null;
 	let wafDetection = null;
+	const subdomainData = await fetchSubdomainsForTarget(url);
 
 	// Auto-detect WAF first if enabled
 	if (autoDetectWAF && !detectedWAFType) {
@@ -384,7 +457,7 @@ async function fetchResults() {
 			},
 		};
 
-		document.getElementById('results').innerHTML = renderReport(allResults, falsePositiveTest);
+		document.getElementById('results').innerHTML = renderReportWithSubdomains(allResults, falsePositiveTest, subdomainData);
 		document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
 		highlightCategoryCheckboxesByResults(allResults, falsePositiveTest);
 

@@ -2,6 +2,7 @@ import { handleApiCheckFiltered } from './handlers/check';
 import { handleWAFDetection } from './handlers/waf-detect';
 import { handleHTTPManipulation } from './handlers/http-manip';
 import { handleBatchStart, handleBatchStatus, handleBatchStop } from './handlers/batch';
+import { handleSubdomainLookup } from './handlers/subdomains';
 
 // Лучше сразу загрузить index.html при старте (если возможно)
 let INDEX_HTML = '';
@@ -95,6 +96,9 @@ export default {
 					: undefined,
 			);
 			return new Response(JSON.stringify(results), { headers: { 'content-type': 'application/json; charset=UTF-8' } });
+		}
+		if (urlObj.pathname === '/api/subdomains') {
+			return await handleSubdomainLookup(request);
 		}
 		if (urlObj.pathname === '/api/http-manipulation') {
 			return await handleHTTPManipulation(request);
