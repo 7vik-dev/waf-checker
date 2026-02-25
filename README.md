@@ -106,4 +106,4 @@ npx wrangler deploy
 
 ---
 
-Read my blog at [yoursec.substack.com](https://yoursec.substack.com/)
+Repository: [github.com/7vik-dev/waf-checker](https://github.com/7vik-dev/waf-checker)
