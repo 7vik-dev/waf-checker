@@ -112,6 +112,7 @@ function renderSubdomainsPanel(subdomainData) {
 	const safeHost = escapeHtml(subdomainData?.targetHost || 'Unknown target');
 	const subdomains = Array.isArray(subdomainData?.subdomains) ? subdomainData.subdomains : [];
 	const error = subdomainData?.error || '';
+	const lookupHosts = Array.isArray(subdomainData?.lookupHosts) ? subdomainData.lookupHosts : [];
 
 	let panel = `<div class="subdomain-panel card">
 		<div class="card-header d-flex justify-content-between align-items-center">
@@ -120,6 +121,10 @@ function renderSubdomainsPanel(subdomainData) {
 		</div>
 		<div class="card-body p-2">
 			<div class="small text-muted mb-2">Target: <code>${safeHost}</code></div>`;
+
+	if (lookupHosts.length) {
+		panel += `<div class="small text-muted mb-2">Checked: <code>${escapeHtml(lookupHosts.join(', '))}</code></div>`;
+	}
 
 	if (error) {
 		panel += `<div class="alert alert-warning py-2 px-2 small mb-2">${escapeHtml(error)}</div>`;
@@ -171,12 +176,14 @@ async function fetchSubdomainsForTarget(targetUrl) {
 		return {
 			targetHost: data?.targetHost || targetUrl,
 			subdomains: Array.isArray(data?.subdomains) ? data.subdomains : [],
+			lookupHosts: Array.isArray(data?.lookupHosts) ? data.lookupHosts : [],
 			error: '',
 		};
 	} catch (error) {
 		return {
 			targetHost: targetUrl,
 			subdomains: [],
+			lookupHosts: [],
 			error: error instanceof Error ? error.message : 'Failed to load subdomains',
 		};
 	}
